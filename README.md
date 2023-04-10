@@ -42,7 +42,7 @@ Desafio de Backend proposto pela SpotSat, garenciamento de locais e áreas.
 ```
 {
 	"data": {
-		"login": "sucesfull",
+		"login": "successful",
 		"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjoiQnJ1bm8iLCJpYXQiOjE2ODExNDM5MzYsImV4cCI6MTY4MTIzMDMzNn0.BDjWYCLBugxymwYlzftNdt9D5I9t2rPsDksqtXdT-nw"
 	},
 	"messages": []
