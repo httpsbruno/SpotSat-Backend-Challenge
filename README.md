@@ -23,6 +23,7 @@ Desafio de Backend proposto pela SpotSat, garenciamento de locais e áreas.
 |errors|	arquivos com códigos de erro padrão do projetos            |
 |middleware| códigos para verificação e autenticação            |
 |models| Interfaces para tipagem            |
+|respository| conexão com Banco de Dados        |
 |responses| estrutura padrão de response          |
 |routes | rotas da aplicação           |
 |service| códigos com a lógica da API           |
