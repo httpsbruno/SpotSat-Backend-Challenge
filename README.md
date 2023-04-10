@@ -65,7 +65,7 @@ Desafio de Backend proposto pela SpotSat, garenciamento de locais e áreas.
 }
  ```
 
-- Rota `http://localhost:8080/location-test`, caso tenha permissão:
+- Rota `http://localhost:8080/location-test`, caso NÃO tenha permissão:
  ```
 {
 		"data": {},
