@@ -6,7 +6,7 @@ class AreaCRUD extends PostgresDB {
     try {
       this.client.connect();
 
-      const insertAccountQuery = `
+      const insertAreaQuery = `
                 INSERT INTO areas (
                     id_area,
                     name,
@@ -20,7 +20,7 @@ class AreaCRUD extends PostgresDB {
                 ) RETURNING id_area
             `;
       //ST_SetSRID(ST_MakePoint($3, $4), 4326),
-      const result = await this.client.query(insertAccountQuery, [
+      const result = await this.client.query(insertAreaQuery, [
         location.id,
         location.name,
         location.geometry,
@@ -37,47 +37,57 @@ class AreaCRUD extends PostgresDB {
     } catch (error) {
       console.log(error);
       this.client.end();
-      throw new Error("503: service temporarily unavailable Account");
+      throw new Error("503: service temporarily unavailable");
     }
   }
 
-  public async update(location: LocationData, admin: string): Promise<boolean>{
+  public async getAllArea(): Promise<string> {
     try {
-        this.client.connect();
-  
-        const insertAccountQuery = `
-                  INSERT INTO areas (
-                      id_area,
-                      name,
-                      polygon,
-                      admin_name
-                  ) VALUES (
-                      $1,
-                      $2,
-                      ST_GeomFromGeoJson($3),
-                      $4
-                  ) RETURNING id_area
+      this.client.connect();
+
+      const getAllQuery = `
+                  SELECT * FROM areas ORDER BY created_at DESC
               `;
-        //ST_SetSRID(ST_MakePoint($3, $4), 4326),
-        const result = await this.client.query(insertAccountQuery, [
-          location.id,
-          location.name,
-          location.geometry,
-          admin,
-        ]);
-  
-        this.client.end();
-  
-        if (result.rows.length !== 0) {
-          return true;
-        }
-  
-        return false;
-      } catch (error) {
-        console.log(error);
-        this.client.end();
-        throw new Error("503: service temporarily unavailable Account");
+
+      const result = await this.client.query(getAllQuery);
+
+      this.client.end();
+
+      if (result.rows.length !== 0) {
+        return JSON.stringify(result.rows);
       }
+
+      return "";
+    } catch (error) {
+      console.log(error);
+      this.client.end();
+      throw new Error("503: service temporarily unavailable");
+    }
+  }
+
+  public async getAreabyId(id: string): Promise<string> {
+    try {
+      this.client.connect();
+
+      const getAreaByIdQuery = `
+                  SELECT * FROM areas 
+                  WHERE id_area = $1
+              `;
+
+      const result = await this.client.query(getAreaByIdQuery, [id]);
+
+      this.client.end();
+
+      if (result.rows.length !== 0) {
+        return JSON.stringify(result.rows[0]);
+      }
+
+      return "";
+    } catch (error) {
+      console.log(error);
+      this.client.end();
+      throw new Error("503: service temporarily unavailable");
+    }
   }
 }
 
