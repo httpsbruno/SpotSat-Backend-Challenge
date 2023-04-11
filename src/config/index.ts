@@ -1,4 +1,4 @@
-import * as dotenv from 'dotenv';
+import * as dotenv from "dotenv";
 
 dotenv.config();
 
@@ -6,10 +6,11 @@ const config = {
   PORT: process.env.PORT,
   JWT_KEY: process.env.JWT_KEY,
   POSTGRES: {
-    USER: process.env.USER,
+    DIALECT: "postgres",
     HOST: process.env.HOST,
-    DATABASE: process.env.DATABASE,
+    USER: process.env.USER,
     PASSWORD: process.env.PASSWORD,
+    DATABASE: process.env.DATABASE,
     DBPORT: process.env.DBPORT,
   },
 };

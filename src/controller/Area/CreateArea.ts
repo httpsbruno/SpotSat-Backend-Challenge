@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { LocationService } from "../service/LocationService";
-import { ResponseWriter } from "../utils/response";
+import { CreateAreaService } from "../../service/Area/CreateAreaService";
+import { ResponseWriter } from "../../utils/response";
 
-class LocationTest {
-  private service = LocationService;
+class CreateArea {
+  private service = CreateAreaService;
 
   private responseWriter = ResponseWriter;
 
@@ -18,4 +18,4 @@ class LocationTest {
   }
 }
 
-export { LocationTest };
+export { CreateArea };
