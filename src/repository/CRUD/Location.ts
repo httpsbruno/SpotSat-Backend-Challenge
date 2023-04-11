@@ -89,6 +89,31 @@ class LocationCRUD extends PostgresDB {
       throw new Error("503: service temporarily unavailable");
     }
   }
+
+  public async delete(id: string): Promise<boolean> {
+    try {
+      this.client.connect();
+
+      const deleteQuery = `
+                  DELETE FROM locations 
+                  WHERE id_location = $1
+              `;
+
+      const result = await this.client.query(deleteQuery, [id]);
+
+      this.client.end();
+
+      if (result.rowCount !== 0) {
+        return true;
+      }
+
+      return false;
+    } catch (error) {
+      console.log(error);
+      this.client.end();
+      throw new Error("503: service temporarily unavailable");
+    }
+  }
 }
 
 export { LocationCRUD };
