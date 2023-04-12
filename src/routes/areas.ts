@@ -3,12 +3,14 @@ import { CreateArea } from "../controller/Area/CreateArea";
 import { GetAllArea } from "../controller/Area/GetAllArea";
 import { GetAreaById } from "../controller/Area/GetAreaById";
 import { DeleteArea } from "../controller/Area/DeleteAreaService";
+import { UpdateArea } from "../controller/Area/UpdateArea";
 const route = Router();
 
 // post - criar area
 route.post("/area", new CreateArea().handle.bind(new CreateArea()));
 
 // put/id - editar local
+route.put("/area/:id", new UpdateArea().handle.bind(new UpdateArea()));
 // getall - retorna todos os locais
 route.get("/area", new GetAllArea().handle.bind(new GetAllArea()));
 // get/id - retorna um local

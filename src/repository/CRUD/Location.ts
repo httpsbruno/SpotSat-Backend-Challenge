@@ -90,6 +90,41 @@ class LocationCRUD extends PostgresDB {
     }
   }
 
+  public async update(location: LocationData, admin: string): Promise<boolean> {
+    try {
+      this.client.connect();
+
+      const updateLocationQuery = `
+                UPDATE locations 
+                SET
+                    name = $1,
+                    point = $2,
+                    admin_name = $3
+                WHERE id_location = $4
+                RETURNING id_location
+            `;
+
+      const result = await this.client.query(updateLocationQuery, [
+        location.name,
+        location.geometry,
+        admin,
+        location.id,
+      ]);
+
+      this.client.end();
+
+      if (result.rows.length !== 0) {
+        return true;
+      }
+
+      return false;
+    } catch (error) {
+      console.log(error);
+      this.client.end();
+      throw new Error("503: service temporarily unavailable");
+    }
+  }
+
   public async delete(id: string): Promise<boolean> {
     try {
       this.client.connect();
