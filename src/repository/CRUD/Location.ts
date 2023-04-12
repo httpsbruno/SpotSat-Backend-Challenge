@@ -45,7 +45,11 @@ class LocationCRUD extends PostgresDB {
       this.client.connect();
 
       const getAllQuery = `
-                  SELECT * FROM locations ORDER BY created_at DESC
+                  SELECT 
+                          id_location,
+                          name,
+                          ST_AsGeoJSON(point) as geometry
+                  FROM locations ORDER BY created_at DESC
               `;
 
       const result = await this.client.query(getAllQuery);
@@ -68,7 +72,11 @@ class LocationCRUD extends PostgresDB {
       this.client.connect();
 
       const getLocationByIdQuery = `
-                  SELECT * FROM locations 
+                  SELECT 
+                      id_location,
+                      name,
+                      ST_AsGeoJSON(point) as geometry
+                  FROM locations 
                   WHERE id_location = $1
               `;
 
@@ -92,7 +100,11 @@ class LocationCRUD extends PostgresDB {
       this.client.connect();
 
       const getLocationByNameQuery = `
-                  SELECT * FROM locations 
+                  SELECT 
+                      id_location,
+                      name,
+                      ST_AsGeoJSON(point) as geometry
+                  FROM locations 
                   WHERE name = $1
               `;
 

@@ -98,7 +98,11 @@ class Operations extends PostgresDB {
       this.client.connect();
 
       const areasInCircleQuery = `
-                      SELECT * FROM areas 
+                      SELECT 
+                          id_area,
+                          name,
+                          ST_AsGeoJSON(polygon) as geometry
+                      FROM areas 
                       WHERE ST_DWithin(polygon, 
                             ST_SetSRID(ST_MakePoint(
                               $1, $2), 4326), $3);
@@ -134,7 +138,11 @@ class Operations extends PostgresDB {
       this.client.connect();
 
       const locationsInCircleQuery = `
-                      SELECT * FROM locations 
+                      SELECT 
+                          id_location,
+                          name,
+                          ST_AsGeoJSON(point) as geometry
+                      FROM locations 
                       WHERE ST_DWithin(point, 
                             ST_SetSRID(ST_MakePoint(
                               $1, $2), 4326), $3);

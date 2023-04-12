@@ -45,7 +45,11 @@ class AreaCRUD extends PostgresDB {
       this.client.connect();
 
       const getAllQuery = `
-                  SELECT * FROM areas ORDER BY created_at DESC
+                      SELECT 
+                          id_area,
+                          name,
+                          ST_AsGeoJSON(polygon) as geometry
+                      FROM areas ORDER BY created_at DESC
               `;
 
       const result = await this.client.query(getAllQuery);
@@ -68,7 +72,11 @@ class AreaCRUD extends PostgresDB {
       this.client.connect();
 
       const getAreaByIdQuery = `
-                  SELECT * FROM areas 
+                  SELECT 
+                      id_area,
+                      name,
+                      ST_AsGeoJSON(polygon) as geometry
+                  FROM areas 
                   WHERE id_area = $1
               `;
 
@@ -92,7 +100,11 @@ class AreaCRUD extends PostgresDB {
       this.client.connect();
 
       const getAreaByNameQuery = `
-                  SELECT * FROM areas 
+                  SELECT 
+                      id_area,
+                      name,
+                      ST_AsGeoJSON(polygon) as geometry
+                  FROM areas 
                   WHERE name = $1
               `;
 

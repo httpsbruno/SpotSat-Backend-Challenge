@@ -19,7 +19,7 @@ class LocationsInCircleService {
         long,
         r
       );
-
+  
       if (getLocationsInCircle) {
         return {
           data: JSON.parse(getLocationsInCircle),
