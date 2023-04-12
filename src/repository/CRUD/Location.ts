@@ -35,7 +35,6 @@ class LocationCRUD extends PostgresDB {
 
       return false;
     } catch (error) {
-      console.log(error);
       this.client.end();
       throw new Error("503: service temporarily unavailable");
     }
@@ -59,7 +58,6 @@ class LocationCRUD extends PostgresDB {
 
       return "";
     } catch (error) {
-      console.log(error);
       this.client.end();
       throw new Error("503: service temporarily unavailable");
     }
@@ -84,7 +82,30 @@ class LocationCRUD extends PostgresDB {
 
       return "";
     } catch (error) {
-      console.log(error);
+      this.client.end();
+      throw new Error("503: service temporarily unavailable!");
+    }
+  }
+
+  public async getLocationbyName(name: string): Promise<string> {
+    try {
+      this.client.connect();
+
+      const getLocationByNameQuery = `
+                  SELECT * FROM locations 
+                  WHERE name = $1
+              `;
+
+      const result = await this.client.query(getLocationByNameQuery, [name]);
+
+      this.client.end();
+
+      if (result.rows.length !== 0) {
+        return JSON.stringify(result.rows[0]);
+      }
+
+      return "";
+    } catch (error) {
       this.client.end();
       throw new Error("503: service temporarily unavailable!");
     }
@@ -119,7 +140,6 @@ class LocationCRUD extends PostgresDB {
 
       return false;
     } catch (error) {
-      console.log(error);
       this.client.end();
       throw new Error("503: service temporarily unavailable");
     }
@@ -144,7 +164,6 @@ class LocationCRUD extends PostgresDB {
 
       return false;
     } catch (error) {
-      console.log(error);
       this.client.end();
       throw new Error("503: service temporarily unavailable");
     }

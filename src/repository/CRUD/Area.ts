@@ -35,7 +35,6 @@ class AreaCRUD extends PostgresDB {
 
       return false;
     } catch (error) {
-      console.log(error);
       this.client.end();
       throw new Error("503: service temporarily unavailable");
     }
@@ -59,7 +58,6 @@ class AreaCRUD extends PostgresDB {
 
       return "";
     } catch (error) {
-      console.log(error);
       this.client.end();
       throw new Error("503: service temporarily unavailable");
     }
@@ -84,7 +82,30 @@ class AreaCRUD extends PostgresDB {
 
       return "";
     } catch (error) {
-      console.log(error);
+      this.client.end();
+      throw new Error("503: service temporarily unavailable");
+    }
+  }
+
+  public async getAreabyName(name: string): Promise<string> {
+    try {
+      this.client.connect();
+
+      const getAreaByNameQuery = `
+                  SELECT * FROM areas 
+                  WHERE name = $1
+              `;
+
+      const result = await this.client.query(getAreaByNameQuery, [name]);
+
+      this.client.end();
+
+      if (result.rows.length !== 0) {
+        return JSON.stringify(result.rows[0]);
+      }
+
+      return "";
+    } catch (error) {
       this.client.end();
       throw new Error("503: service temporarily unavailable");
     }
@@ -103,7 +124,7 @@ class AreaCRUD extends PostgresDB {
                 WHERE id_area = $4
                 RETURNING id_area
             `;
-      
+
       const result = await this.client.query(updateAreaQuery, [
         location.name,
         location.geometry,
@@ -119,7 +140,6 @@ class AreaCRUD extends PostgresDB {
 
       return false;
     } catch (error) {
-      console.log(error);
       this.client.end();
       throw new Error("503: service temporarily unavailable");
     }
@@ -144,13 +164,10 @@ class AreaCRUD extends PostgresDB {
 
       return false;
     } catch (error) {
-      console.log(error);
       this.client.end();
       throw new Error("503: service temporarily unavailable");
     }
   }
-
-
 }
 
 export { AreaCRUD };
