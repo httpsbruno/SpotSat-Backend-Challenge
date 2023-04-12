@@ -42,7 +42,7 @@ class LocationInAreaService {
         } as APIResponse;
       } else {
         return {
-          data: { status: "Erro ao Consultar" },
+          data: { status: "Nenhum local encontrado" },
           messages: [],
         } as APIResponse;
       }

@@ -39,7 +39,7 @@ class DistanceBetweenService {
         } as APIResponse;
       } else {
         return {
-          data: { status: "Erro ao Consultar" },
+          data: { status: "Distância não encontrada" },
           messages: [],
         } as APIResponse;
       }

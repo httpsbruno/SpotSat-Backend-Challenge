@@ -22,7 +22,6 @@ class Operations extends PostgresDB {
       this.client.end();
 
       if (result.rows.length !== 0) {
-        
         return JSON.stringify(result.rows[0]);
       }
 
@@ -85,6 +84,77 @@ class Operations extends PostgresDB {
 
       return "";
     } catch (error) {
+      this.client.end();
+      throw new Error("503: service temporarily unavailable");
+    }
+  }
+
+  public async areasInCircle(
+    lat: number,
+    long: number,
+    r: number
+  ): Promise<string> {
+    try {
+      this.client.connect();
+
+      const areasInCircleQuery = `
+                      SELECT * FROM areas 
+                      WHERE ST_DWithin(polygon, 
+                            ST_SetSRID(ST_MakePoint(
+                              $1, $2), 4326), $3);
+                    `;
+
+      const result = await this.client.query(areasInCircleQuery, [
+        lat,
+        long,
+        r,
+      ]);
+
+      this.client.end();
+
+      if (result.rows.length !== 0) {
+        console.log(result.rows);
+        return JSON.stringify(result.rows);
+      }
+
+      return "";
+    } catch (error) {
+      console.log(error);
+      this.client.end();
+      throw new Error("503: service temporarily unavailable");
+    }
+  }
+
+  public async locationsInCircle(
+    lat: number,
+    long: number,
+    r: number
+  ): Promise<string> {
+    try {
+      this.client.connect();
+
+      const locationsInCircleQuery = `
+                      SELECT * FROM locations 
+                      WHERE ST_DWithin(point, 
+                            ST_SetSRID(ST_MakePoint(
+                              $1, $2), 4326), $3);
+                    `;
+
+      const result = await this.client.query(locationsInCircleQuery, [
+        lat,
+        long,
+        r,
+      ]);
+
+      this.client.end();
+
+      if (result.rows.length !== 0) {
+        return JSON.stringify(result.rows);
+      }
+
+      return "";
+    } catch (error) {
+      console.log(error);
       this.client.end();
       throw new Error("503: service temporarily unavailable");
     }
