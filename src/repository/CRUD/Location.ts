@@ -86,7 +86,7 @@ class LocationCRUD extends PostgresDB {
     } catch (error) {
       console.log(error);
       this.client.end();
-      throw new Error("503: service temporarily unavailable");
+      throw new Error("503: service temporarily unavailable!");
     }
   }
 
