@@ -13,7 +13,7 @@ class DistanceBetween {
 
       const response = await new this.service().execute(id1, id2);
 
-      this.responseWriter.success(res, 201, response);
+      this.responseWriter.success(res, 200, response);
     } catch (err) {
       this.responseWriter.error(res, err as Error);
     }

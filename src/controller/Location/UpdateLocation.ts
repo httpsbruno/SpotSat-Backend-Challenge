@@ -16,7 +16,7 @@ class UpdateLocation {
         adminName
       );
 
-      this.responseWriter.success(res, 201, response);
+      this.responseWriter.success(res, 200, response);
     } catch (err) {
       this.responseWriter.error(res, err as Error);
     }

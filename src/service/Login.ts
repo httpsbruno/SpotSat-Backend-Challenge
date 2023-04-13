@@ -21,10 +21,6 @@ class LoginService {
     }
 
     const token = authToken.generateToken(login.username);
-    // TODO change to secure true
-    // res.cookie('bearer', token, { secure: false, sameSite: true, httpOnly: true, maxAge: authToken.tokenExpirationTime * 1000 });
-
-    //return this.serviceResponseBuilder([ { username } ], '');
 
     if (login.username === "Bruno" && login.password === "1234") {
       return {
