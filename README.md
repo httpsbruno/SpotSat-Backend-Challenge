@@ -14,6 +14,7 @@ Desafio de Backend proposto pela SpotSat, garenciamento de locais e áreas.
   > DBPORT=0000
   > JWT_KEY=""
 - o projeto foi configurado para utilizar `prettier` e `eslint`
+- comando `yarn start:dev`
 
 # Estrutura de Pastas
 
