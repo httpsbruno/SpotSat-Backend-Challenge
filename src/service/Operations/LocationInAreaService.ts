@@ -1,5 +1,4 @@
 import { APIResponse } from "../../models/APIResponse";
-import { authToken } from "../../middleware/auth";
 import { PointData } from "../../models/PointData";
 import { Operations } from "../../repository/Operations";
 import { LocationCRUD } from "../../repository/CRUD/Location";
@@ -13,11 +12,9 @@ class LocationInAreaService {
 
   public async execute(
     locationName: string,
-    areaName: string,
-    cookie: string
+    areaName: string
   ): Promise<APIResponse> {
-    if (cookie) {
-      const checkCookie = authToken.verifyToken(cookie);
+    try {
       const getLocation = await this.location.getLocationbyName(locationName);
       if (!getLocation) {
         throw new Error(`404: Erro ao encontrar Local`);
@@ -29,12 +26,12 @@ class LocationInAreaService {
         throw new Error(`404: Erro ao encontrar Area`);
       }
       const area = JSON.parse(getArea) as PolygonData;
-      
+
       const getLocationInArea = await this.operations.locationInArea(
         location,
         area
       );
-       
+
       if (getLocationInArea) {
         return {
           data: JSON.parse(getLocationInArea),
@@ -46,12 +43,9 @@ class LocationInAreaService {
           messages: [],
         } as APIResponse;
       }
+    } catch (error) {
+      throw new Error("503: service temporarily unavailable");
     }
-
-    return {
-      data: {},
-      messages: ["an error occurred while token verification"],
-    } as APIResponse;
   }
 }
 

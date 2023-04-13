@@ -4,17 +4,38 @@ import { GetAllArea } from "../controller/Area/GetAllArea";
 import { GetAreaById } from "../controller/Area/GetAreaById";
 import { DeleteArea } from "../controller/Area/DeleteAreaService";
 import { UpdateArea } from "../controller/Area/UpdateArea";
+import { Auth } from "../middleware/middlewareAuth";
+
 const route = Router();
 
-// post - criar area
-route.post("/area", new CreateArea().handle.bind(new CreateArea()));
+route.post(
+  "/area",
+  new Auth().handle.bind(new Auth()),
+  new CreateArea().handle.bind(new CreateArea())
+);
 
-// put/id - editar local
-route.put("/area/:id", new UpdateArea().handle.bind(new UpdateArea()));
-// getall - retorna todos os locais
-route.get("/area", new GetAllArea().handle.bind(new GetAllArea()));
-// get/id - retorna um local
-route.get("/area/:id", new GetAreaById().handle.bind(new GetAreaById()));
-// delete/id - apaga o local
-route.delete("/area/:id", new DeleteArea().handle.bind(new DeleteArea()));
+route.put(
+  "/area/:id",
+  new Auth().handle.bind(new Auth()),
+  new UpdateArea().handle.bind(new UpdateArea())
+);
+
+route.get(
+  "/area",
+  new Auth().handle.bind(new Auth()),
+  new GetAllArea().handle.bind(new GetAllArea())
+);
+
+route.get(
+  "/area/:id",
+  new Auth().handle.bind(new Auth()),
+  new GetAreaById().handle.bind(new GetAreaById())
+);
+
+route.delete(
+  "/area/:id",
+  new Auth().handle.bind(new Auth()),
+  new DeleteArea().handle.bind(new DeleteArea())
+);
+
 export default route;

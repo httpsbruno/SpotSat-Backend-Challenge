@@ -1,19 +1,16 @@
 import { APIResponse } from "../../models/APIResponse";
-import { authToken } from "../../middleware/auth";
 import { AreaCRUD } from "../../repository/CRUD/Area";
 
 class DeleteAreaService {
   private areacrud = new AreaCRUD();
 
-  public async execute(id: string, cookie: string): Promise<APIResponse> {
-    if (cookie) {
-      const checkCookie = authToken.verifyToken(cookie);
-      
+  public async execute(id: string): Promise<APIResponse> {
+    try {
       const deletearea = await this.areacrud.delete(id);
 
       if (deletearea) {
         return {
-          data: "Excluído com sucesso!" ,
+          data: "Excluído com sucesso!",
           messages: [],
         } as APIResponse;
       } else {
@@ -22,12 +19,9 @@ class DeleteAreaService {
           messages: [],
         } as APIResponse;
       }
+    } catch (error) {
+      throw new Error("503: service temporarily unavailable");
     }
-
-    return {
-      data: {},
-      messages: ["an error occurred while token verification"],
-    } as APIResponse;
   }
 }
 

@@ -1,20 +1,19 @@
 import { APIResponse } from "../../models/APIResponse";
-import { authToken } from "../../middleware/auth";
 import { LocationData } from "../../models/LocationData";
 import { AreaCRUD } from "../../repository/CRUD/Area";
+
 class UpdateAreaService {
   private areacrud = new AreaCRUD();
 
   public async execute(
     id: string,
     local: LocationData,
-    cookie: string
+    admin: string
   ): Promise<APIResponse> {
-    if (cookie) {
-      const checkCookie = authToken.verifyToken(cookie);
+    try {
       local.id = id;
-      const update = await this.areacrud.update(local, checkCookie.payload);
-      
+      const update = await this.areacrud.update(local, admin);
+
       if (update) {
         return {
           data: { status: "Atualizado com sucesso" },
@@ -26,12 +25,9 @@ class UpdateAreaService {
           messages: [],
         } as APIResponse;
       }
+    } catch (error) {
+      throw new Error("503: service temporarily unavailable");
     }
-
-    return {
-      data: {},
-      messages: ["an error occurred while token verification"],
-    } as APIResponse;
   }
 }
 

@@ -10,12 +10,11 @@ class LocationsInCircle {
   public async handle(req: Request, res: Response) {
     try {
       const { latitude, longitude, raio } = req.query;
-        console.log()
+
       const response = await new this.service().execute(
         Number(latitude),
         Number(longitude),
-        Number(raio),
-        req.cookies.bearer
+        Number(raio)
       );
 
       this.responseWriter.success(res, 201, response);

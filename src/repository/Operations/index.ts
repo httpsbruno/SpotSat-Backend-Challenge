@@ -1,22 +1,26 @@
 import { PostgresDB } from "..";
+import { GeometryData } from "../../models/GeometryData";
 import { PointData } from "../../models/PointData";
 import { PolygonData } from "../../models/PolygonData";
 
 class Operations extends PostgresDB {
   public async distanceBetweenTwoPoints(
-    location1: PointData,
-    location2: PointData
+    location1: GeometryData,
+    location2: GeometryData
   ): Promise<string> {
     try {
       this.client.connect();
 
       const distanceQuery = `
-                SELECT ST_Distance($1, $2) AS DistanceBetween
+                SELECT ST_Distance(
+                          ST_GeomFromGeoJson($1), 
+                          ST_GeomFromGeoJson($2)
+                      ) AS DistanceBetween
             `;
 
       const result = await this.client.query(distanceQuery, [
-        location1.point,
-        location2.point,
+        location1.geometry,
+        location2.geometry,
       ]);
 
       this.client.end();
@@ -117,13 +121,11 @@ class Operations extends PostgresDB {
       this.client.end();
 
       if (result.rows.length !== 0) {
-        console.log(result.rows);
         return JSON.stringify(result.rows);
       }
 
       return "";
     } catch (error) {
-      console.log(error);
       this.client.end();
       throw new Error("503: service temporarily unavailable");
     }
@@ -162,7 +164,6 @@ class Operations extends PostgresDB {
 
       return "";
     } catch (error) {
-      console.log(error);
       this.client.end();
       throw new Error("503: service temporarily unavailable");
     }

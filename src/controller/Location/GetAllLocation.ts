@@ -9,7 +9,7 @@ class GetAllLocation {
 
   public async handle(req: Request, res: Response) {
     try {
-      const response = await new this.service().execute(req.cookies.bearer);
+      const response = await new this.service().execute();
 
       this.responseWriter.success(res, 201, response);
     } catch (err) {

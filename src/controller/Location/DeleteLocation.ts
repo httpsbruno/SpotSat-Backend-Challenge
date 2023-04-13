@@ -9,7 +9,7 @@ class DeleteLocation {
 
   public async handle(req: Request, res: Response) {
     try {
-      const response = await new this.service().execute(req.params.id, req.cookies.bearer);
+      const response = await new this.service().execute(req.params.id);
 
       this.responseWriter.success(res, 201, response);
     } catch (err) {

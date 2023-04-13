@@ -9,7 +9,11 @@ class CreateArea {
 
   public async handle(req: Request, res: Response) {
     try {
-      const response = await new this.service().execute(req.body, req.cookies.bearer);
+      const adminName =req.cookies.bearer.payload;
+      const response = await new this.service().execute(
+        req.body,
+        adminName
+      );
 
       this.responseWriter.success(res, 201, response);
     } catch (err) {

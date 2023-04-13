@@ -9,9 +9,9 @@ class LocationsInArea {
 
   public async handle(req: Request, res: Response) {
     try {
-      const { areaName } = req.params; 
- 
-      const response = await new this.service().execute(areaName, req.cookies.bearer);
+      const { areaName } = req.params;
+
+      const response = await new this.service().execute(areaName);
 
       this.responseWriter.success(res, 201, response);
     } catch (err) {

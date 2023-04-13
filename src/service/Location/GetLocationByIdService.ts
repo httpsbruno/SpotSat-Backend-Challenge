@@ -1,19 +1,16 @@
 import { APIResponse } from "../../models/APIResponse";
-import { authToken } from "../../middleware/auth";
 import { LocationCRUD } from "../../repository/CRUD/Location";
 
 class GetLocationByIdService {
   private locationcrud = new LocationCRUD();
 
-  public async execute(id: string, cookie: string): Promise<APIResponse> {
-    if (cookie) {
-      const checkCookie = authToken.verifyToken(cookie);
-      
+  public async execute(id: string): Promise<APIResponse> {
+    try {
       const getbyid = await this.locationcrud.getLocationbyId(id);
 
       if (getbyid) {
         return {
-          data: JSON.parse(getbyid) ,
+          data: JSON.parse(getbyid),
           messages: [],
         } as APIResponse;
       } else {
@@ -22,12 +19,9 @@ class GetLocationByIdService {
           messages: [],
         } as APIResponse;
       }
+    } catch (error) {
+      throw new Error("503: service temporarily unavailable");
     }
-
-    return {
-      data: {},
-      messages: ["an error occurred while token verification"],
-    } as APIResponse;
   }
 }
 

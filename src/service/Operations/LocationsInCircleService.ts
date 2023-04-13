@@ -1,5 +1,4 @@
 import { APIResponse } from "../../models/APIResponse";
-import { authToken } from "../../middleware/auth";
 import { Operations } from "../../repository/Operations";
 
 class LocationsInCircleService {
@@ -8,18 +7,15 @@ class LocationsInCircleService {
   public async execute(
     lat: number,
     long: number,
-    r: number,
-    cookie: string
+    r: number
   ): Promise<APIResponse> {
-    if (cookie) {
-      const checkCookie = authToken.verifyToken(cookie);
-
+    try {
       const getLocationsInCircle = await this.operations.locationsInCircle(
         lat,
         long,
         r
       );
-  
+
       if (getLocationsInCircle) {
         return {
           data: JSON.parse(getLocationsInCircle),
@@ -31,12 +27,9 @@ class LocationsInCircleService {
           messages: [],
         } as APIResponse;
       }
+    } catch (error) {
+      throw new Error("503: service temporarily unavailable");
     }
-
-    return {
-      data: {},
-      messages: ["an error occurred while token verification"],
-    } as APIResponse;
   }
 }
 
