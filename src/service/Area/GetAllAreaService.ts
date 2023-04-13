@@ -1,18 +1,16 @@
 import { APIResponse } from "../../models/APIResponse";
-import { authToken } from "../../middleware/auth";
 import { AreaCRUD } from "../../repository/CRUD/Area";
+
 class GetAllAreaService {
   private areacrud = new AreaCRUD();
 
-  public async execute(cookie: string): Promise<APIResponse> {
-    if (cookie) {
-      const checkCookie = authToken.verifyToken(cookie);
-      
+  public async execute(): Promise<APIResponse> {
+    try {
       const getall = await this.areacrud.getAllArea();
 
       if (getall) {
         return {
-          data: JSON.parse(getall) ,
+          data: JSON.parse(getall),
           messages: [],
         } as APIResponse;
       } else {
@@ -21,12 +19,9 @@ class GetAllAreaService {
           messages: [],
         } as APIResponse;
       }
+    } catch (error) {
+      throw new Error("503: service temporarily unavailable");
     }
-
-    return {
-      data: {},
-      messages: ["an error occurred while token verification"],
-    } as APIResponse;
   }
 }
 
